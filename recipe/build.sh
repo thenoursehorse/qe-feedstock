@@ -3,6 +3,13 @@
 # Put back `set -ex` once we can make all tests pass
 #set -ex
 
+# update when elpa has an osx-arm64 conda build
+if [[ "$target_platform" == "osx-arm64" ]]; then
+  ELPA=OFF
+else
+  ELPA=ON
+fi
+
 
 # preprocessor executable name was hardcoded
 # (will be fixed in next release)
@@ -17,7 +24,7 @@ cmake .. \
     -DQE_ENABLE_MPI=ON \
     -DQE_ENABLE_OPENMP=ON \
     -DQE_ENABLE_SCALAPACK=ON \
-    -DQE_ENABLE_ELPA=ON \
+    -DQE_ENABLE_ELPA=${ELPA} \
     -DQE_ENABLE_HDF5=ON \
     -DQE_ENABLE_TEST=ON \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -38,7 +45,7 @@ export OMPI_MCA_plm_rsh_agent=sh
 #make test
 # there are known test failures that will be addressed later
 # disable test for aarch64 for now it takes too long and timeout of build
-if [[ $(lscpu | awk '/Architecture:/{print $2}') != "aarch64" ]]; then 
+if [[ "$(uname -m)" = "aarch64" ]]; then 
     ctest -L "pw|cp|unit" -LE epw --output-on-failure  || true
 else
     ctest -L "unit" --output-on-failure  || true

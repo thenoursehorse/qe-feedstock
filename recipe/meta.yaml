@@ -34,7 +34,7 @@ requirements:
     - hdf5 * *openmpi*
     - openmpi
     - scalapack
-    - elpa * *openmpi*
+    - elpa * *openmpi*  # [not (osx and arm64)]
     - fftw
     - fox
     # libxc 5 conda-forge package currently does not include fortran bindings
@@ -44,7 +44,7 @@ requirements:
     - fftw
     - openmpi
     - scalapack
-    - elpa
+    - elpa  # [not (osx and arm64)]
 
 test:
   commands:
